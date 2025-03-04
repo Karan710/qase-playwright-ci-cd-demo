@@ -42,5 +42,6 @@ jobs:
       - name: Run Playwright tests
         env:
           QASE_MODE: "testops"
+          QASE_TESTOPS_PLAN_ID: 1
         run: |
           npx playwright test
