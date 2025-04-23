@@ -44,6 +44,7 @@ jobs:
         env:
           QASE_TESTOPS_PLAN_ID: 1 
           QASE_DEBUG: true
+          QASE_TESTOPS_RUN_TITLE: "Karan auto run"
           QASE_MODE: "testops"
           
         run: |
