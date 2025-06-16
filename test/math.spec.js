@@ -2,6 +2,7 @@
 
 const math = require('../src/math');
 const { test, expect } = require('@playwright/test');
+const {qase} = require('playwright-qase-reporter')
  
 
 test.describe('Math module', () => {
