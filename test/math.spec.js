@@ -5,7 +5,8 @@ const { test, expect } = require('@playwright/test');
  
 
 test.describe('Math module', () => {
-  test('should correctly add two numbers', () => {
+  test('should correctly show sum of two numbers', () => {
+   qase.id(9)
     expect(math.add(2, 3)).toBe(5);
   });
 
