@@ -1,0 +1,28 @@
+name: AIDEN Integration CI/CD
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  aiden-integration:
+    runs-on: ubuntu-latest
+    environment: testing
+    
+    steps:        
+      - name: AIDEN integration
+        uses: qase-tms/qase-cloud-ci-integrations/@v1.0.0
+        with:
+          project_code: ARTEM
+          api_token: ${{ secrets.QASE_API_TOKEN }}
+          run_title: 'GitHub CI/CD integrations Run - PR #${{ github.event.pull_request.number }}'
+          include_all_cases: 'true'
+          browser: 'chromium'
+          timeout: '600'
+          poll_interval: '10'
+          env_slug: test-env
+          env_title: test-env
+          env_host: https://google.com
