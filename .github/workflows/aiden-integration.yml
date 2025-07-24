@@ -1,10 +1,8 @@
 name: AIDEN Integration CI/CD
 
 on:
-  pull_request:
-    branches: [ main, develop ]
   push:
-    branches: [ main, develop ]
+    branches: [ Karan ]
   workflow_dispatch:
 
 jobs:
@@ -16,10 +14,10 @@ jobs:
       - name: AIDEN integration
         uses: qase-tms/qase-cloud-ci-integrations/@v1.0.0
         with:
-          project_code: ARTEM
-          api_token: ${{ secrets.QASE_API_TOKEN }}
+          project_code: VA
+          api_token: ${{ secrets.QASE_AIDEN_TOKEN }}
           run_title: 'GitHub CI/CD integrations Run - PR #${{ github.event.pull_request.number }}'
-          include_all_cases: 'true'
+          case_ids: '1,2'
           browser: 'chromium'
           timeout: '600'
           poll_interval: '10'
