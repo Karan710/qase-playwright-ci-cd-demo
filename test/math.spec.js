@@ -1,9 +1,23 @@
-//math.spec.js
 
 const math = require('../src/math');
 const { test, expect } = require('@playwright/test');
 const {qase} = require('playwright-qase-reporter')
  
+test('Google page loads and screenshot is taken', async ({ page }) => {
+  await page.goto('https://www.google.com');
+
+  // Accept cookies if the prompt appears (for EU regions)
+  const acceptButton = page.locator('button', { hasText: /Accept/i });
+  if (await acceptButton.isVisible()) {
+    await acceptButton.click();
+  }
+
+  // Take a full-page screenshot
+  await page.screenshot({ path: 'screenshots/google-home.png', fullPage: true });
+
+  // Simple assertion to make sure "Google Search" input is visible
+  await expect(page.locator('input[name="q"]')).toBeVisible();
+});
 
 test.describe('Math module', () => {
   test('should correctly add two numbers', () => {
