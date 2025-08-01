@@ -28,6 +28,7 @@ jobs:
           QASE_MODE: "testops"
 
         run: |
+          npx playwright install
           npx playwright test
           
       - name: List Environment Variables
