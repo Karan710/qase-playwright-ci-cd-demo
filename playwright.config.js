@@ -1,4 +1,8 @@
 const config = {
+ use: {
+    screenshot: 'on',
+    video: 'on',
+  },
     reporter: [
       ['list'], 
       [         
