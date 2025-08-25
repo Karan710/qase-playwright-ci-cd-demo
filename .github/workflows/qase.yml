@@ -43,7 +43,7 @@ jobs:
   
       - name: Run Playwright tests
         env:
-          QASE_TESTOPS_PLAN_ID: 1 
+          QASE_TESTOPS_PLAN_ID: 5 
           QASE_DEBUG: true
           QASE_TESTOPS_RUN_TITLE: "Karan auto run"
           QASE_MODE: "testops"
