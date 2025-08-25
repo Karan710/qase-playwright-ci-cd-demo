@@ -26,6 +26,7 @@ jobs:
           QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
           QASE_TESTOPS_PROJECT: ${{ secrets.QASE_TESTOPS_PROJECT }}
           QASE_MODE: "testops"
+          QASE_TESTOPS_PLAN_ID: 5
 
         run: |
           npx playwright install
