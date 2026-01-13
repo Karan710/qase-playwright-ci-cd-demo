@@ -24,7 +24,7 @@ env:
   QASE_TESTOPS_RUN_COMPLETE: true
   QASE_DEBUG: true
   QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
-  QASE_TESTOPS_PLAN_ID: 5
+  QASE_TESTOPS_PLAN_ID: 6
   
 
 jobs:
@@ -44,10 +44,7 @@ jobs:
   
       - name: Run Playwright tests
         env:
-          QASE_TESTOPS_PLAN_ID: 5 
-          QASE_DEBUG: true
-          QASE_TESTOPS_RUN_TITLE: "Karan auto run"
-          QASE_MODE: "testops"
+          QASE_TESTOPS_PLAN_ID: 6
           
         run: |
           npx playwright test
