@@ -17,6 +17,7 @@ on:
       qase_run_complete:
         description: 'Qase Run autocomplete'
         required: true
+
 env:
   QASE_API_BASE_URL: ${{ inputs.qase_api_base_url }}
   QASE_TESTOPS_PROJECT: ${{ inputs.qase_project_code }}
@@ -25,7 +26,6 @@ env:
   QASE_DEBUG: true
   QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
   QASE_TESTOPS_PLAN_ID: 6
-  
 
 jobs:
   test:
@@ -36,15 +36,28 @@ jobs:
 
       - name: Checkout code
         uses: actions/checkout@v3
-    
+
+      - name: Get Qase Run Environment
+        run: |
+          RESPONSE=$(curl --request GET \
+            --url https://api.qase.io/v1/run/${{ inputs.qase_project_code }}/${{ inputs.qase_run_id }} \
+            --header "Token: ${{ secrets.QASE_TESTOPS_API_TOKEN }}" \
+            --header "accept: application/json")
+
+          echo "Full Response:"
+          echo "$RESPONSE"
+
+          ENVIRONMENT_NAME=$(echo "$RESPONSE" | jq -r '.result.environment.title')
+
+          echo "Environment Name: $ENVIRONMENT_NAME"
+
       - name: Install dependencies
         run: |
           npm install
           npx playwright install
-  
+
       - name: Run Playwright tests
         env:
           QASE_TESTOPS_PLAN_ID: 6
-          
         run: |
           npx playwright test
