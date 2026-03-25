@@ -25,6 +25,8 @@ pipeline {
                     env.QASE_TESTOPS_RUN_ID = params.QASE_RUN_ID
                     env.QASE_TESTOPS_RUN_COMPLETE = params.QASE_RUN_COMPLETE
                 }
+                sh '''echo PROJECT=$QASE_TESTOPS_PROJECT
+                    echo RUN_ID=$QASE_TESTOPS_RUN_ID'''
             }
         }
 
@@ -33,6 +35,7 @@ pipeline {
                 git url: 'https://github.com/Karan710/qase-playwright-ci-cd-demo.git', branch: 'main'
                 sh 'npm install'
                 sh 'npx playwright test'
+                
             }
         }
     }
