@@ -41,10 +41,10 @@ spec:
         
         stage('Run tests') {
             steps {
-                git url: 'https://github.com/foo/bar.git', branch: 'main'
+                git url: 'https://github.com/Karan710/qase-playwright-ci-cd-demo.git', branch: 'main'
                 container('node') {
                     sh 'npm i'
-                    sh 'npx jest'
+                    sh 'npm test'
                 }
             }
         }
