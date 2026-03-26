@@ -34,7 +34,7 @@ pipeline {
 
         stage('Run tests') {
             steps {
-                git url: 'https://github.com/Karan710/qase-playwright-ci-cd-demo.git', branch: 'main'
+                git url: 'https://github.com/Karan710/qase-playwright-ci-cd-demo.git', branch: 'Karan'
                 sh 'npm install'
                 sh 'npx playwright test'
             }
