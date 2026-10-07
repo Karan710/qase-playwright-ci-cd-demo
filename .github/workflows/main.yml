@@ -3,59 +3,61 @@ on:
   workflow_dispatch:
     inputs:
       qase_api_base_url:
-        description: "Qase API URL"
-        required: false
+        description: 'Qase API URL'
+        required: true
       qase_report:
-        description: "Enabled/disabled reporting to Qase"
-        required: false
+        description: 'Enabled/disabled reporting to Qase'
+        required: true
       qase_project_code:
-        description: "Qase project code"
-        required: false
+        description: 'Qase project code'
+        required: true
       qase_run_id:
-        description: "Qase Run ID"
-        required: false
+        description: 'Qase Run ID'
+        required: true
       qase_run_complete:
-        description: "Qase Run autocomplete"
-        required: false
+        description: 'Qase Run autocomplete'
+        required: true
 
 env:
-  QASE_API_BASE_URL: ${{ inputs.qase_api_base_url || vars.QASE_API_BASE_URL }}
-  QASE_TESTOPS_PROJECT: ${{ inputs.qase_project_code || vars.QASE_TESTOPS_PROJECT }}
-  QASE_RUN_ID: ${{ inputs.qase_run_id }}
+  QASE_API_BASE_URL: ${{ inputs.qase_api_base_url }}
+  QASE_TESTOPS_PROJECT: ${{ inputs.qase_project_code }}
+  QASE_TESTOPS_RUN_ID: ${{ inputs.qase_run_id }}
   QASE_TESTOPS_RUN_COMPLETE: true
+  QASE_DEBUG: true
   QASE_TESTOPS_API_TOKEN: ${{ secrets.QASE_TESTOPS_API_TOKEN }}
-  QASE_MODE: 'testops'
+  QASE_TESTOPS_PLAN_ID: 3
 
 jobs:
   test:
+    timeout-minutes: 60
     runs-on: ubuntu-latest
-
     steps:
-
       - uses: cskmnrpt/qase-link-run@v2
-        env:
-          QASE_TESTOPS_API_TOKEN: ${{ env.QASE_TESTOPS_API_TOKEN }}
-          QASE_TESTOPS_RUN_ID: ${{ env.QASE_RUN_ID }}
-          QASE_TESTOPS_PLAN_ID: 3
-        continue-on-error: true
 
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v3
+
+      - name: Get Qase Run Environment
+        run: |
+          RESPONSE=$(curl --request GET \
+            --url https://api.qase.io/v1/run/${{ inputs.qase_project_code }}/${{ inputs.qase_run_id }} \
+            --header "Token: ${{ secrets.QASE_TESTOPS_API_TOKEN }}" \
+            --header "accept: application/json")
+
+          echo "Full Response:"
+          echo "$RESPONSE"
+
+          ENVIRONMENT_NAME=$(echo "$RESPONSE" | jq -r '.result.environment.title')
+
+          echo "Environment Name: $ENVIRONMENT_NAME"
 
       - name: Install dependencies
         run: |
           npm install
-
-      - name: Check QASE_RUN_ID and set environment variable
-        id: check-run-id
-        run: |
-          # Ensure QASE_RUN_ID is not empty and is an integer
-          if [[ -n "${{ env.QASE_RUN_ID }}" && "${{ env.QASE_RUN_ID }}" =~ ^[0-9]+$ ]]; then
-            echo "QASE_TESTOPS_RUN_ID=${{ env.QASE_RUN_ID }}" >> $GITHUB_ENV
-          else
-            echo "QASE_RUN_ID is either empty or not an integer"
-          fi
+          npx playwright install
 
       - name: Run Playwright tests
+        env:
+          QASE_TESTOPS_PLAN_ID: 3
         run: |
-          npm test
+          npx playwright test
