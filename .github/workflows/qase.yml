@@ -58,6 +58,6 @@ jobs:
 
       - name: Run Playwright tests
         env:
-          QASE_TESTOPS_PLAN_ID: 6
+          QASE_TESTOPS_PLAN_ID: 3
         run: |
           npx playwright test
